@@ -9,7 +9,8 @@ import java.sql.Statement;
 public class Kata5P1 {
 
     public static void main(String[] args) {
-        selectAll();
+        //selectAll();
+        createNewTable();
     }
     
     private static Connection connect(String URL) {
@@ -59,5 +60,24 @@ public class Kata5P1 {
         System.out.println(e.getMessage());
         }       
    }
+   
+   public static void createNewTable() {
+        // Cadena de conexión SQLite
+        String url = "jdbc:sqlite:C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Kata5P1\\KATA5.db";
+        
+        // Instrucción SQL para crear nueva tabla
+        String sql = "CREATE TABLE IF NOT EXISTS EMAIL (\n"
+            + " Id integer PRIMARY KEY AUTOINCREMENT,\n"
+            + " Mail text NOT NULL);";
+        
+        try (Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement()) {
+         // Se crea la nueva tabla
+            stmt.execute(sql);
+            System.out.println("Tabla creada");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }       
+    }
     
 }
