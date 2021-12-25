@@ -2,15 +2,22 @@ package kata5p1;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 public class Kata5P1 {
 
     public static void main(String[] args) {
         //selectAll();
-        createNewTable();
+        //createNewTable();
+        String nameFile = "email.txt";
+        List<String> mailList = MailListReader.read(nameFile);
+        for (String email : mailList) {
+            insert(email);
+        }
     }
     
     private static Connection connect(String URL) {
@@ -78,6 +85,19 @@ public class Kata5P1 {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }       
+    }
+   
+   // Método para insertar datos en la tabla direcc_email
+    public static void insert(String email) {
+        String url = "jdbc:sqlite:C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Kata5P1\\KATA5.db";
+        String sql = "INSERT INTO EMAIL(Mail) VALUES(?)";
+        try (Connection conn = DriverManager.getConnection(url);
+        PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
     
 }
